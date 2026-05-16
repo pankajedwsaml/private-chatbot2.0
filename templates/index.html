@@ -1,31 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Private Chatbot</title>
-    <link rel="stylesheet" href="/static/style.css">
-<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Private Chatbot</title>
+    <title>privateai</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
+
 <body>
 
-    <div class="chat-container">
+<div class="chat-container">
 
-        <div class="header">
-            Private AI
-        </div>
-
-        <div id="chat-box" class="chat-box"></div>
-
-        <div class="input-area">
-            <input id="message-input" type="text" placeholder="Ask anything...">
-            <button onclick="sendMessage()">Send</button>
-        </div>
-
+    <div class="topbar">
+        <div class="brand">privateai</div>
+        <button class="clear-btn" onclick="clearChat()">Clear</button>
     </div>
 
-    <script src="/static/script.js"></script>
+    <div class="empty-state" id="empty">
+        <h2>Hi, how can I assist you today?</h2>
+        <p>Ask anything — private, fast, simple.</p>
+    </div>
+
+    <div class="chat-box" id="chat-box"></div>
+
+    <div class="input-area">
+        <input id="message-input" placeholder="Message privateai..." />
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+</div>
+
+<script src="/static/script.js"></script>
 
 </body>
 </html>

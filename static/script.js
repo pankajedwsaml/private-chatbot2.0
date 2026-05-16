@@ -1,31 +1,41 @@
-window.onload = function(){
-
+// load saved chat
+window.onload = function () {
     const oldChats = localStorage.getItem("chat_history");
 
-    if(oldChats){
+    if (oldChats) {
         document.getElementById("chat-box").innerHTML = oldChats;
+        document.body.classList.add("chat-start");
+        document.getElementById("empty").style.display = "none";
     }
-
 };
 
 
+// ================= UI ACTIVATION =================
+function activateChatUI() {
+    document.body.classList.add("chat-start");
+}
+
+
+// ================= SEND MESSAGE =================
 async function sendMessage() {
 
     const input = document.getElementById("message-input");
     const chatBox = document.getElementById("chat-box");
 
     const message = input.value.trim();
-
     if (!message) return;
 
-    // User message
+    // 👉 THIS FIXES YOUR CONFUSION
+    activateChatUI();
+
+    // user message
     chatBox.innerHTML += `
         <div class="message user">${message}</div>
     `;
 
     input.value = "";
 
-    // Create bot bubble
+    // bot placeholder
     const botId = "bot-" + Date.now();
 
     chatBox.innerHTML += `
@@ -34,64 +44,65 @@ async function sendMessage() {
 
     chatBox.scrollTop = chatBox.scrollHeight;
 
-    // Save current chat
-    localStorage.setItem(
-        "chat_history",
-        chatBox.innerHTML
-    );
-
-    // Ask AI
+    // API CALL
     const response = await fetch("/chat", {
         method: "POST",
-        headers: {
-            "Content-Type":"application/json"
-        },
-        body: JSON.stringify({
-            message: message
-        })
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ message })
     });
 
     const data = await response.json();
 
-    // Typing effect
-    const botBox = document.getElementById(botId);
+    typeText(botId, data.reply);
+}
 
-    let text = data.reply;
+
+// ================= TYPING EFFECT =================
+function typeText(id, text) {
+
+    const el = document.getElementById(id);
+    el.innerText = "";
+
+    text = text.replace(/\s+/g, " ").trim();
+
+    const words = text.split(" ");
     let i = 0;
 
     const typing = setInterval(() => {
 
-        if(i < text.length){
-
-            botBox.innerHTML += text.charAt(i);
-
+        if (i < words.length) {
+            el.innerText += (i === 0 ? "" : " ") + words[i];
             i++;
-
-            chatBox.scrollTop = chatBox.scrollHeight;
-
-            // Save while typing
-            localStorage.setItem(
-                "chat_history",
-                chatBox.innerHTML
-            );
-
-        }
-        else{
+        } else {
             clearInterval(typing);
+            saveChat();
         }
 
-    }, 30);
-
+    }, 60);
 }
 
 
-// Enter key send
-document.getElementById("message-input")
-.addEventListener("keydown", function(event){
+// ================= SAVE CHAT =================
+function saveChat() {
+    const chatBox = document.getElementById("chat-box");
+    localStorage.setItem("chat_history", chatBox.innerHTML);
+}
 
-    if(event.key === "Enter"){
-        event.preventDefault();
+
+// ================= CLEAR CHAT =================
+function clearChat() {
+    localStorage.removeItem("chat_history");
+    document.getElementById("chat-box").innerHTML = "";
+    document.getElementById("empty").style.display = "flex";
+    document.body.classList.remove("chat-start");
+}
+
+
+// ================= ENTER KEY =================
+document.getElementById("message-input")
+.addEventListener("keydown", function(e){
+    if(e.key === "Enter"){
+        e.preventDefault();
         sendMessage();
     }
-
 });
