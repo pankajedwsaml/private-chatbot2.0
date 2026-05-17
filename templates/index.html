@@ -11,21 +11,69 @@
 
 <div class="chat-container">
 
+    <!-- TOP BAR -->
     <div class="topbar">
-        <div class="brand">privateai</div>
-        <button class="clear-btn" onclick="clearChat()">Clear</button>
+
+        <!-- LEFT MENU -->
+        <button class="menu-btn"
+                onclick="toggleSidebar()">
+            ☰
+        </button>
+
+        <!-- BRAND -->
+        <div class="brand">
+            privateai
+        </div>
+
+        <!-- NEW CHAT -->
+        <button class="plus-btn"
+                onclick="newChat()">
+            +
+        </button>
+
     </div>
 
-    <div class="empty-state" id="empty">
-        <h2>Hi, how can I assist you today?</h2>
-        <p>Ask anything — private, fast, simple.</p>
+    <!-- SIDEBAR -->
+    <div class="sidebar"
+         id="sidebar">
+
     </div>
 
-    <div class="chat-box" id="chat-box"></div>
+    <!-- EMPTY STATE -->
+    <div class="empty-state"
+         id="empty">
 
+        <h2>
+            Hi, how can I assist you today?
+        </h2>
+
+        <p>
+            Ask anything — private, fast, simple.
+        </p>
+
+    </div>
+
+    <!-- CHAT AREA -->
+    <div class="chat-box"
+         id="chat-box">
+
+    </div>
+
+    <!-- INPUT -->
     <div class="input-area">
-        <input id="message-input" placeholder="Message privateai..." />
-        <button onclick="sendMessage()">Send</button>
+
+        <input
+            id="message-input"
+            placeholder="Message privateai..."
+        />
+
+        <button
+            onclick="sendMessage()">
+
+            Send
+
+        </button>
+
     </div>
 
 </div>
