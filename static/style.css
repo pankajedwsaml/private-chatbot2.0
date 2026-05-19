@@ -39,24 +39,22 @@ position:relative;
 }
 
 /* ☰ REAL LEFT */
-.menu-btn{
-   position:absolute;
+.menu-btn{ position:absolute; 
+    left:14px; 
+    width:34px;
+     height:34px;
+      border-radius:50%;
+       display:flex;
+        align-items:center;
+         justify-content:center;
+          background:rgba(255,255,255,0.04);
+           border:none; 
+           color:rgba(255,255,255,0.72);
+            font-size:18px;
+             cursor:pointer;
+              pointer-events:auto; }
 
-    left:14px;
 
-    background:none;
-    border:none;
-
-    color:rgba(255,255,255,0.88);
-
-    font-size:18px;
-
-    font-weight:500;
-
-    cursor:pointer;
-
-    pointer-events:auto;
-}
 
 /* + button right */
 .plus-btn{
@@ -156,11 +154,11 @@ right:14px;
 /* SIDEBAR */
 .sidebar{
     position:fixed;
-    top:54px;
+    top:0;
     left:-52%;
 
     width:52%;              /* HALF SCREEN */
-    height:calc(100% - 54px);
+    height:100%;
 
     background:#111;
     overflow-y:auto;
@@ -168,7 +166,7 @@ right:14px;
     transition:0.3s ease;
     z-index:30;
 
-    padding:10px;
+    padding:70px 10px 10px;
 }
 
 .sidebar.open{

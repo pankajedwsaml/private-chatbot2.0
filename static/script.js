@@ -100,20 +100,51 @@ window.onload = function () {
 
 /* NEW CHAT */
 function newChat(){
+    if(
 
-    const id = "chat_" + Date.now();
+    currentChat &&
+
+    chats[currentChat] &&
+
+    chats[currentChat].messages.length === 0
+
+){
+
+    delete chats[currentChat];
+
+}
+
+    const id =
+        "chat_" + Date.now();
 
     chats[id] = {
+
         title:"New Chat",
+
         messages:[],
-        pinned:false
+
+        pinned:false,
+pinTime:null
+
     };
 
     currentChat = id;
 
     save();
+
     renderSidebar();
-    loadChat(id);
+
+    const box =
+        document.getElementById(
+            "chat-box"
+        );
+
+    box.innerHTML = "";
+
+    document
+    .getElementById("empty")
+    .style.display = "flex";
+
 }
 
 /* LOAD CHAT */
@@ -192,41 +223,83 @@ async function sendMessage(){
     ];
 
 
+    const lower = text.toLowerCase();
+
+let title = "New Chat";
+
+
+if(
+    lower.includes("food")
+){
+    title = "Food Talk";
+}
+
+else if(
+    lower.includes("heat")
+    ||
+    lower.includes("weather")
+    ||
+    lower.includes("summer")
+){
+    title = "Heat Discussion";
+}
+
+else if(
+    lower.includes("hello")
+    ||
+    lower.includes("hi")
+    ||
+    lower.includes("hey")
+){
+    title = "Greeting Talk";
+}
+
+else if(
+    lower.includes("study")
+    ||
+    lower.includes("exam")
+    ||
+    lower.includes("math")
+){
+    title = "Study Discussion";
+}
+
+else if(
+    lower.includes("code")
+    ||
+    lower.includes("app")
+    ||
+    lower.includes("chatbot")
+){
+    title = "Chatbot Project";
+}
+
+else{
+
     const useful =
 
         words.filter(
 
             word =>
 
-            !skip.includes(
-                word
-            )
+            !skip.includes(word)
+
+            &&
+
+            word.length > 2
 
         );
 
+    title = useful
+        .slice(0,4)
+        .join(" ");
 
-    if(
-        useful.length > 0
-    ){
-
-        chats[currentChat].title =
-
-            useful
-            .slice(0,2)
-            .join(" ");
-
-    }
-
-    else{
-
-        chats[currentChat].title =
-
-            text.substring(0,15);
-
-    }
+}
 
 
-    renderSidebar();
+chats[currentChat].title = title;
+
+renderSidebar();
 
 }
 
@@ -305,19 +378,30 @@ function renderSidebar(){
 
     .sort((a,b)=>{
 
-    /* pinned always first */
-    if(
-        chats[a].pinned &&
-        !chats[b].pinned
-    ) return -1;
+    /* pinned first */
+     if(
+    chats[a].pinned &&
+    chats[b].pinned
+){
 
-    if(
-        !chats[a].pinned &&
-        chats[b].pinned
-    ) return 1;
+    return chats[a].pinTime -
+           chats[b].pinTime;
+
+}
+
+if(
+    chats[a].pinned &&
+    !chats[b].pinned
+) return -1;
+
+if(
+    !chats[a].pinned &&
+    chats[b].pinned
+) return 1;
 
 
     /* current active chat after pins */
+
     if(
         a === currentChat
     ) return -1;
@@ -327,7 +411,9 @@ function renderSidebar(){
     ) return 1;
 
 
-    return 0;
+    /* newest chats after that */
+
+    return b.localeCompare(a);
 
 });
 
@@ -407,8 +493,21 @@ function renameChat(id){
 function pinChat(id){
 
     chats[id].pinned =
-
         !chats[id].pinned;
+
+    if(chats[id].pinned){
+
+        chats[id].pinTime =
+            Date.now();
+
+    }
+
+    else{
+
+        chats[id].pinTime =
+            null;
+
+    }
 
     save();
 
