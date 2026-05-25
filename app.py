@@ -20,31 +20,76 @@ def home():
 @app.route("/chat", methods=["POST"])
 def chat():
 
-    user_message = request.json.get("message")
+    data = request.json
+
+    user_message = data.get("message")
+
+    history = data.get("history", [])
+
+
+    messages = [
+
+        {
+            "role": "system",
+            "content": """
+You are a smart modern AI assistant.
+
+Rules:
+- Talk naturally
+- Remember previous conversation
+- Give clear and useful answers
+- Avoid robotic replies
+- Be friendly and intelligent
+- Explain coding simply
+- Keep answers clean and structured
+- Stay on the current topic
+"""
+        }
+
+    ]
+
+
+    for msg in history:
+
+        role = msg["role"]
+
+        if role == "bot":
+            role = "assistant"
+
+        messages.append({
+
+            "role": role,
+
+            "content": msg["text"]
+
+        })
+
+
+    messages.append({
+
+        "role": "user",
+
+        "content": user_message
+
+    })
+
 
     response = client.chat.completions.create(
-      model="llama-3.1-8b-instant",
-        messages=[
-            {
-                "role": "system",
-                "content": """
-                You are a private assistant.
-                Talk naturally like a real chatbot.
-                Keep answers short and useful.
-                Be engaging.
-                """
-            },
-            {
-                "role": "user",
-                "content": user_message
-            }
-        ]
+
+        model="llama-3.1-8b-instant",
+
+        messages=messages
+
     )
+
 
     bot_reply = response.choices[0].message.content
 
+
     return jsonify({
+
         "reply": bot_reply
+
     })
 
 

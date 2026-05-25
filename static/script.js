@@ -309,7 +309,13 @@ renderSidebar();
     const res = await fetch("/chat",{
         method:"POST",
         headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({message:text})
+       body:JSON.stringify({
+
+    message:text,
+
+    history: chats[currentChat].messages
+
+})
     });
 
     const data = await res.json();
@@ -331,7 +337,17 @@ function addMessage(role,text,id=null){
     div.className = "message "+role;
     div.id = id || "";
 
+   if(role === "bot"){
+
+    div.innerHTML = marked.parse(text);
+
+}
+
+else{
+
     div.innerText = text;
+
+}
 
     box.appendChild(div);
 
