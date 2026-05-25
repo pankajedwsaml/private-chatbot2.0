@@ -609,3 +609,15 @@ document
     }
 
 );
+const input = document.getElementById("message");
+
+input.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();  // your send function
+    }
+});
+input.addEventListener("input", function () {
+    this.style.height = "auto";
+    this.style.height = this.scrollHeight + "px";
+});

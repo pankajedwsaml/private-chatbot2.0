@@ -454,3 +454,26 @@ background:#222;
     padding:0;
 
 }
+textarea {
+    width: 100%;
+    resize: none;
+    overflow: hidden;
+
+    padding: 12px 14px;
+    font-size: 16px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 18px;   /* 🔥 this is what you lost */
+    outline: none;
+
+    background: #fff;
+
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+     transition: 0.2s ease;
+}
+
+textarea:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 3px rgba(74,144,226,0.2);
+}
