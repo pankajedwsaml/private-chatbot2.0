@@ -609,15 +609,39 @@ document
     }
 
 );
-const input = document.getElementById("message");
+const input = document.getElementById("message-input");
 
+/* ENTER KEY FIX */
 input.addEventListener("keydown", function (e) {
-    if (e.key === "Enter" && !e.shiftKey) {
+
+    if (e.key === "Enter") {
+
+        // Shift + Enter → new line
+        if (e.shiftKey) {
+            return;
+        }
+
+        // Enter → send message
         e.preventDefault();
-        sendMessage();  // your send function
+        sendMessage();
     }
+
 });
+
+/* AUTO RESIZE TEXTAREA (CHATGPT STYLE) */
 input.addEventListener("input", function () {
+
     this.style.height = "auto";
-    this.style.height = this.scrollHeight + "px";
+
+    const maxHeight = 150;
+
+    if (this.scrollHeight < maxHeight) {
+        this.style.height = this.scrollHeight + "px";
+        this.style.overflowY = "hidden";
+    } else {
+        this.style.height = maxHeight + "px";
+        this.style.overflowY = "auto";
+    }
+
 });
+
