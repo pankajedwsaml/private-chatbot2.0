@@ -191,6 +191,9 @@ async function sendMessage(){
     if(!text || !currentChat) return;
 
     input.value = "";
+    
+    input.style.height = "44px";
+    input.style.overflowY = "hidden";
 
     addMessage("user", text);
  if(
