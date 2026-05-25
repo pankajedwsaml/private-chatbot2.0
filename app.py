@@ -26,7 +26,6 @@ def chat():
 
     history = data.get("history", [])
 
-
     messages = [
 
         {
@@ -48,7 +47,6 @@ Rules:
 
     ]
 
-
     for msg in history:
 
         role = msg["role"]
@@ -64,7 +62,6 @@ Rules:
 
         })
 
-
     messages.append({
 
         "role": "user",
@@ -73,18 +70,23 @@ Rules:
 
     })
 
+    try:
 
-    response = client.chat.completions.create(
+        response = client.chat.completions.create(
 
-        model="llama-3.1-8b-instant",
+            model="llama-3.1-8b-instant",
 
-        messages=messages
+            messages=messages
 
-    )
+        )
 
+        bot_reply = response.choices[0].message.content
 
-    bot_reply = response.choices[0].message.content
+    except Exception as e:
 
+        print(e)
+
+        bot_reply = "Server is busy right now. Try again."
 
     return jsonify({
 

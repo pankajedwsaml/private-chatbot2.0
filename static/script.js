@@ -313,7 +313,7 @@ renderSidebar();
 
     message:text,
 
-    history: chats[currentChat].messages
+   history: chats[currentChat].messages.slice(-10)
 
 })
     });
