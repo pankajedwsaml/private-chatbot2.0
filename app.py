@@ -24,13 +24,22 @@ def chat():
 
     user_message = data.get("message")
 
-    history = data.get("history", [])
+    history = data.get("history", [])[-20:]
 
+    if not user_message.strip():
+      return jsonify({
+        "reply": "Please type something."
+    })
+
+    if len(set(user_message)) == 1 and len(user_message) > 15:
+       return jsonify({
+        "reply": "That looks like spam 😅"
+    })
     messages = [
 
-        {
-            "role": "system",
-            "content": """
+    {
+        "role": "system",
+        "content": """
 You are a smart modern AI assistant.
 
 Rules:
@@ -42,10 +51,19 @@ Rules:
 - Explain coding simply
 - Keep answers clean and structured
 - Stay on the current topic
+- Keep replies short unless user asks deeply
+- Avoid repeating phrases
+- Talk like a modern human
+- Don't over-explain simple questions
+- Use headings only when needed
+- Never make fake news or fake live events
+- If unsure, say honestly you don't know
+- Ignore meaningless spam inputs
+- Don't become overly dramatic or poetic
 """
-        }
+    }
 
-    ]
+]
 
     for msg in history:
 
