@@ -295,7 +295,8 @@ else{
 
     title = useful
         .slice(0,4)
-        .join(" ");
+        .join(" ")
+        .substring(0,30);
 
 }
 
@@ -481,9 +482,9 @@ if(
                     Rename
                 </div>
 
-                <div onclick="pinChat('${id}')">
-                    Pin
-                </div>
+               <div onclick="pinChat('${id}')">
+    ${chats[id].pinned ? "Unpin" : "Pin"}
+</div>
 
                 <div onclick="deleteChat('${id}')">
                     Delete
@@ -536,8 +537,28 @@ function pinChat(id){
 
 /* DELETE */
 function deleteChat(id){
+
     delete chats[id];
+
+    /* if deleted chat was active */
+    if(currentChat === id){
+
+        currentChat = null;
+
+        const box =
+            document.getElementById("chat-box");
+
+        box.innerHTML = "";
+
+        document
+        .getElementById("empty")
+        .style.display = "flex";
+
+        newChat();
+    }
+
     save();
+
     renderSidebar();
 }
 
